@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paymentservice
+spec:
+  selector:
+    matchLabels:
+      app: paymentservice
+  template:
+    metadata:
+      labels:
+        app: paymentservice
+    spec:
+      containers:
+      - env:
+        - name: PORT
+          value: "50051"
+        - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+          value: http://appd-otel-collector.opentelemetry-controller.svc.cluster.local:4317
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: service.name=paymentservice,service.version=1.0.0
+        image: docker.io/jholmes/paymentservice:1.0.0
+        imagePullPolicy: IfNotPresent
+        # livenessProbe:
+        #   exec:
+        #     command:
+        #     - /bin/grpc_health_probe
+        #     - -addr=:50051
+        name: server
+        ports:
+        - containerPort: 50051
+        # readinessProbe:
+        #   exec:
+        #     command:
+        #     - /bin/grpc_health_probe
+        #     - -addr=:50051
+        resources:
+          limits:
+            cpu: 200m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 5
