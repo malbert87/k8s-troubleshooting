@@ -16,14 +16,14 @@ spec:
         livenessProbe:
          periodSeconds: 5
          tcpSocket:
-           port: 637
+           port: 6379
         name: redis
         ports:
         - containerPort: 6379
         readinessProbe:
           periodSeconds: 5
           tcpSocket:
-             port: 6379
+             port: 637
         resources:
           limits:
             cpu: 125m
