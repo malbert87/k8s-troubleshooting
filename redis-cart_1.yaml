@@ -16,7 +16,7 @@ spec:
         livenessProbe:
          periodSeconds: 5
          tcpSocket:
-           port: 6379
+           port: 637
         name: redis
         ports:
         - containerPort: 6379
